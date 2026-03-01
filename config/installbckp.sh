@@ -22,7 +22,7 @@ echo -e "${ORANGE} Install data backup yang baru ${NC}"
 sleep 3
 apt install rclone -y
 printf "q\n" | rclone config
-wget -O /root/.config/rclone/rclone.conf "https://raw.githubusercontent.com/hsspunya93/JVN/main/config/rclone.conf"
+wget -O /root/.config/rclone/rclone.conf "https://raw.githubusercontent.com/julakhss/opt/main/config/rclone.conf"
 cd /bin
 git clone  https://github.com/magnific0/wondershaper.git
 cd wondershaper
