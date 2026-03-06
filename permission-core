@@ -1,0 +1,42 @@
+#!/bin/bash
+
+REPO="https://raw.githubusercontent.com/julakhss/opt/main/ip"
+CACHE="/opt/julak/data/.script_permission"
+
+# Ambil IP VPS
+MYIP=$(curl -s --max-time 5 ipv4.icanhazip.com)
+[ -z "$MYIP" ] && MYIP=$(curl -s --max-time 5 ifconfig.me)
+[ -z "$MYIP" ] && MYIP=$(curl -s --max-time 5 ipinfo.io/ip)
+
+if [[ -z "$MYIP" ]]; then
+echo "Network error"
+exit 1
+fi
+
+DATA=$(curl -s --max-time 10 $REPO | grep -w "$MYIP")
+
+if [[ -z "$DATA" ]]; then
+echo "DENIED" > $CACHE
+echo "Permission Denied"
+exit 1
+fi
+
+USER=$(echo "$DATA" | awk '{print $2}')
+EXP=$(echo "$DATA" | awk '{print $3}')
+
+# cek lifetime
+if [[ "$EXP" =~ ^[Ll]ifetime$ ]]; then
+echo "VALID $USER LIFETIME" > $CACHE
+exit 0
+fi
+
+NOW=$(date +%s)
+EXP_DATE=$(date -d "$EXP" +%s)
+
+if (( NOW > EXP_DATE )); then
+echo "DENIED" > $CACHE
+echo "Script Expired"
+exit 1
+fi
+
+echo "VALID $USER $EXP" > $CACHE
