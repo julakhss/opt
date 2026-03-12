@@ -1,0 +1,21 @@
+#!/bin/bash
+# ====================================================
+# 	Author:	Julak Bantur
+# 	Dscription: Autoscript Julak Vpn V1
+# 	email: putrameratus2@gmail.com
+#     telegram: https://t.me/rajaganjil93
+# ====================================================
+
+CACHE="/opt/julak/data/.script_julakvpn"
+
+if [[ ! -f $CACHE ]]; then
+/opt/julak/data/julak-vpn
+fi
+
+STATUS=$(cat $CACHE | awk '{print $1}')
+
+if [[ "$STATUS" != "VALID" ]]; then
+echo -e "\e[1;31m❌ Client Name atau IP VPS tidak terdaftar!\033[0m"
+echo -e "➥ Hubungi admin \033[1;96m「  ✦ https://wa.me/081250851741 ✦ 」 \033[0m"
+exit
+fi
